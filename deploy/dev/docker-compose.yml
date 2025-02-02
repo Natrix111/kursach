@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/:/etc/nginx/conf.d/
+    depends_on:
+      - backend
+      - frontend
+      - db
+    networks:
+      - network
+
+  db:
+    image: postgres:alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: booking
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    networks:
+      - network
+
+  backend:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    volumes:
+      - ../../backend:/var/www
+    working_dir: /var/www
+    container_name: backend
+    networks:
+      - network
+
+  backend-proxy:
+    build:
+      context: ../../
+      dockerfile: ./deploy/dev/backend-proxy/Dockerfile
+    container_name: backend-proxy
+    hostname: backend-proxy
+    volumes:
+      - ./../../backend/storage/app/public/:/var/www/public/storage/app/public
+    networks:
+      - network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@mail.ru
+      PGADMIN_DEFAULT_PASSWORD: root
+    networks:
+      - network
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: ../deploy/dev/node/Dockerfile
+    volumes:
+      - ../../frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    networks:
+      - network
+
+networks:
+  network:
+
+volumes:
+  db_data:
