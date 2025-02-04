@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Actions;
 
-use Illuminate\Validation\ValidationException;
+use App\Exceptions\FailedLoginException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginUserAction
@@ -9,9 +9,7 @@ class LoginUserAction
     public static function execute(array $credentials)
     {
         if (!$token = JWTAuth::attempt($credentials)) {
-            throw ValidationException::withMessages([
-                'email' => ['Неверный email или пароль.'],
-            ]);
+            throw new FailedLoginException();
         }
 
         return $token;

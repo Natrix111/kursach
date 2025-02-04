@@ -6,6 +6,8 @@ use App\Http\Actions\LoginUserAction;
 use App\Http\Actions\RegisterUserAction;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -26,9 +28,20 @@ class AuthController extends Controller
         $token = LoginUserAction::execute($credentials);
 
         return response()->json([
-            'user' => auth()->user(),
+            'message' => 'Вы успешно вошли в профиль!',
             'token' => $token
         ]);
+    }
+
+    public function logout()
+    {
+        JWTAuth::invalidate(JWTAuth::getToken());
+
+        return response()->json(['message' => 'Вы успешно вышли!']);
+    }
+    public function me()
+    {
+        return response()->json(Auth::user());
     }
 
 }
