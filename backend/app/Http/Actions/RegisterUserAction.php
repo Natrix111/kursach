@@ -15,7 +15,7 @@ class RegisterUserAction
         }
 
         $user = User::create([
-            'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
