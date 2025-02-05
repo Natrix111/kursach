@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,7 @@ Route::post('/update/username', [ProfileController::class, 'updateUsername'])->m
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::post('/send-email', [EmailVerificationController::class, 'sendEmail']);
+    Route::post('/verify-email', [EmailVerificationController::class, 'verifyEmail']);
 });

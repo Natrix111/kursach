@@ -14,4 +14,11 @@ class ProfileController extends Controller
 
         return response()->json(['message' => 'Имя успешно обновлено.']);
     }
+
+    public function updateEmail(UpdateProfileRequest $request)
+    {
+        UpdateEmailAction::execute(auth()->user(), $request->email);
+
+        return response()->json(['message' => 'Почта успешно обновлена.']);
+    }
 }
