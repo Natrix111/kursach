@@ -13,6 +13,7 @@ class VerifyEmailAction
         if($user->verification_code != $verification_code) {
             throw new FailedCodeException();
         }
+
         if($user->verification_code_created_at->addMinutes(15)->isPast())
         {
             $user->verification_code_created_at = null;
@@ -20,8 +21,10 @@ class VerifyEmailAction
             $user->save();
             throw new ExpriedCodeTimeException();
         }
+
         $user->email_verify = 1;
         $user->verification_code = null;
+        $user->verification_code_created_at = null;
         $user->save();
         return $user;
     }

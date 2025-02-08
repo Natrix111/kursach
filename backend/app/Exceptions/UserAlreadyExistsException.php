@@ -15,7 +15,6 @@ class UserAlreadyExistsException extends Exception
     {
         return response()->json([
             'error' => $this->getMessage(),
-            'code' => $this->getCode(),
         ], $this->getCode());
     }
 }

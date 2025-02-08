@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('email')->unique();
+            $table->string('avatar')->nullable()->default(env('APP_URL') .'/api/storage/avatars/default.jpg');
             $table->boolean('email_verify')->default(false);
             $table->string('password');
             $table->string('verification_code')->nullable();

@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class FailedCodeException extends Exception
+class FailedFormatOrSize extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Код подтверждения неверный. Пожалуйста, проверьте и повторите ввод.', 401);
+        parent::__construct('Недопустимый формат или размер изображения(Загрузите файл не более 2МБ и формата png,jpg,jpeg)', 413);
     }
 
     public function render()

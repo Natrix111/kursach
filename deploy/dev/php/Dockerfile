@@ -1,5 +1,7 @@
 FROM php:8.2.11-fpm
 
+RUN echo "post_max_size = 100M" >> /usr/local/etc/php/conf.d/uploads.ini && \
+    echo "upload_max_filesize = 100M" >> /usr/local/etc/php/conf.d/uploads.ini
 
 RUN cd /tmp \
     && curl -sS https://getcomposer.org/installer | php \

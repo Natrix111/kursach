@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class FailedCodeException extends Exception
+class FailedValidationException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Код подтверждения неверный. Пожалуйста, проверьте и повторите ввод.', 401);
+        parent::__construct('Неверный формат данных. Пожалуйста, проверьте введенные данные.', 400);
     }
 
     public function render()

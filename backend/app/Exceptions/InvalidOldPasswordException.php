@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class FailedCodeException extends Exception
+class InvalidOldPasswordException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Код подтверждения неверный. Пожалуйста, проверьте и повторите ввод.', 401);
+        parent::__construct('Старый пароль неверный. Пожалуйста, проверьте введенные данные.', 422);
     }
 
     public function render()

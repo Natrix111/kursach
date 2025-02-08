@@ -17,11 +17,15 @@ Route::get('/asd', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/update/username', [ProfileController::class, 'updateUsername'])->middleware('auth:api');
-
+Route::middleware('auth:api')->prefix('profile')->group(function () {
+    Route::get('/', [AuthController::class, 'me']);
+    Route::patch('/update/username', [ProfileController::class, 'updateUsername']);
+    Route::patch('/update/email', [ProfileController::class, 'updateEmail']);
+    Route::post('/update/avatar', [ProfileController::class, 'updateAvatar']);
+    Route::patch('/change/password', [ProfileController::class, 'changePassword']);
+});
 
 Route::middleware('auth:api')->group(function () {
-    Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::post('/send-email', [EmailVerificationController::class, 'sendEmail']);
