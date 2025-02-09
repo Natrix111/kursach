@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,4 +31,12 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('/send-email', [EmailVerificationController::class, 'sendEmail']);
     Route::post('/verify-email', [EmailVerificationController::class, 'verifyEmail']);
+});
+
+Route::prefix('password')->group(function () {
+    Route::post('request-reset', [PasswordResetController::class, 'sendResetCode']);
+
+    Route::post('verify-reset-code', [PasswordResetController::class, 'verifyResetCode']);
+
+    Route::post('reset', [PasswordResetController::class, 'resetPassword']);
 });
