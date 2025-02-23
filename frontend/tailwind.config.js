@@ -1,0 +1,52 @@
+/** @type {import('tailwindcss').Config} */
+
+export default {
+  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
+  theme: {
+    fontFamily: {
+      main: 'var(--font-family)',
+      second: 'var(--second-family)',
+    },
+    extend: {
+      colors: {
+        'yellow-bright': 'var(--yellow-bright)',
+        'yellow-contrast': 'var(--yelow-contrast)',
+        'cyanic-bright': 'var(--cyanic-bright)',
+        'cyanic-contrast': 'var(--cyanic-contrast)',
+        'purple-light': 'var(--purple-light)',
+        'purple-semi': 'var(--purple-semi)',
+        'purple-medium': 'var(--purple-medium)',
+        'purple-dark': 'var(--purple-dark)',
+        'absolute-white': 'var(--absolute-white)',
+        black: 'var(--black)',
+        'light-green': 'var(--light-green)',
+        'green-active-input': 'var(--green-active-input)',
+        'green-hover-input': 'var(--green-hover-input)',
+        'normal-input': 'var(--normal-input)',
+        placeholder: 'var(--placeholder)',
+        'box-id': 'var(--box-id)',
+        'frame-color': 'var(--frame-color)',
+        'dark-grey': 'var(--dark-grey)',
+        'middle-grey': 'var(--middle-grey)',
+        'input-complete': 'var(--input-complete)',
+        'input-error': 'var(--input-error)',
+        'fill-input-disable': 'var(--fill-input-disable)',
+        'smoke-grey': 'var(--smoke-grey)',
+        'pink-light': 'var(--pink-light)',
+        'stroke-grey': 'var(--stroke-grey)',
+        'pastel-purple': 'var(--pastel-purple)',
+        'lime-green': 'var(--lime-green)',
+        'cancel-btn-fill-normal': 'var(--cancel-btn-fill-normal)',
+        'cancel-btn-stroke-normal': 'var(--cancel-btn-storke-normal)',
+        'cancel-btn-fill-hover': 'var(--cancel-btn-fill-hover)',
+        'cancel-btn-stroke-hover': 'var(--cancel-btn-storke-hover)',
+        'cancel-btn-fill-active': 'var(--cancel-btn-fill-active)',
+        'cancel-btn-stroke-active': 'var(--cancel-btn-storke-active)',
+      },
+    },
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}

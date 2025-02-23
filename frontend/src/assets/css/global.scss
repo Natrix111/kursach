@@ -1,0 +1,73 @@
+* {
+  @apply border-0 m-0 p-0 box-border font-main;
+}
+
+:focus,:active{outline: none;}
+
+a,a:visited{
+  @apply no-underline;
+}
+
+html, body {
+  @apply text-base h-full w-full;
+}
+
+body:has(.app-modal){
+  overflow: hidden;
+}
+
+.button {
+  @apply w-full bg-purple-dark p-3 text-absolute-white text-base duration-300 rounded-[6px] font-second;
+
+  &:hover {
+    @apply bg-purple-medium shadow-[0_2px_4px_0_rgba(0,0,0,0.25)];
+  }
+
+  &:active {
+    @apply bg-purple-semi;
+  }
+
+  &:disabled {
+    @apply bg-gray-300 cursor-not-allowed border-none text-absolute-white;
+  }
+
+  &:disabled:hover {
+    @apply bg-gray-300 cursor-not-allowed shadow-none text-absolute-white;
+  }
+
+  &-empty {
+    @apply border border-purple-dark text-purple-dark bg-transparent;
+
+    &:hover {
+      @apply text-absolute-white;
+    }
+  }
+}
+
+.container{
+  @apply max-w-[1492px] my-0 m-auto;
+}
+
+.text-link {
+  @apply text-dark-grey duration-300 font-second;
+  @apply hover:text-purple-dark active:text-purple-semi;
+
+  &__wrapper {
+    @apply flex justify-between;
+  }
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease-out;
+}
