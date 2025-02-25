@@ -47,7 +47,7 @@ const { isAuth } = storeToRefs(accountStore.useStore())
     @apply flex space-x-6;
 
     &-item {
-      @apply text-gray hover:text-orange-500 transition-colors duration-200;
+      @apply text-gray-700 hover:text-orange-500 transition-colors duration-200;
     }
   }
 
@@ -55,7 +55,7 @@ const { isAuth } = storeToRefs(accountStore.useStore())
     @apply flex space-x-4;
 
     &-item {
-      @apply text-gray hover:text-orange-500 transition-colors duration-200;
+      @apply text-gray-700 hover:text-orange-500 transition-colors duration-200;
     }
   }
 }

@@ -22,7 +22,7 @@ const routes = [
       {
         name: 'register',
         path: 'register',
-        component: () => import('@/features/auth/ui/LoginForm.vue'),
+        component: () => import('@/features/auth/ui/RegisterForm.vue'),
       },
     ],
   },

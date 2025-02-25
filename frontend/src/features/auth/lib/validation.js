@@ -21,7 +21,10 @@ export const registerSchema = yup.object({
     )
     .min(1, 'Поле должно содержать хотя бы 1 символ')
     .max(255, 'Поле должно содержать не более 255 символов'),
-  email: yup.string().email(),
+  email: yup
+    .string()
+    .required('Email обязателен')
+    .email('Email должен соответствовать формату почты'),
   password: passwordValidation,
   passwordConfirm: yup
     .string()

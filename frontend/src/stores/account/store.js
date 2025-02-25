@@ -29,7 +29,8 @@ export const useStore = defineStore('account-store', () => {
 
       push.success('Вы успешно зарегистрированы')
 
-      await router.push(`${Routes.auth.defaultPath}/email-confirm`)
+      // await router.push(`${Routes.auth.defaultPath}/email-confirm`)
+      await router.push(`${Routes.home.path}`)
     } catch (error) {
       push.error(error.response.data.message)
     }
@@ -61,7 +62,7 @@ export const useStore = defineStore('account-store', () => {
     try {
       await accountApi.sendEmailCode()
     } catch (error) {
-      console.error(error.response.data.message)
+      push.error(error.response.data.message)
     }
   }
 
