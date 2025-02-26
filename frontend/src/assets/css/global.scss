@@ -65,6 +65,14 @@ input, textarea {
   }
 }
 
+.text-link {
+  @apply text-gray-500 hover:text-primary duration-300;
+
+  &__wrapper {
+    @apply flex justify-between;
+  }
+}
+
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;

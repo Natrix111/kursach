@@ -38,17 +38,17 @@ const model = defineModel()
 <style scoped lang="scss">
 .form-field {
   &__error {
-    @apply text-xs text-[#e35757];
+    @apply text-xs text-error;
   }
 
   &__input {
-    @apply px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:border-secondary w-full;
+    @apply px-4 py-2 border-2 border-neutral-dark rounded-lg focus:border-primary w-full;
 
     &--error {
-      @apply border-[#e35757];
+      @apply border-error;
 
       &:focus {
-        @apply border-[#e35757];
+        @apply border-error;
       }
     }
 

@@ -13,8 +13,10 @@ export default {
         secondary: '#228B22', // Зеленый
         accent: '#FF4500', // Красный
         neutral: '#F5F5DC', // Бежевый
+        'neutral-dark': '#e6dfb4', // Бежевый
         dark: '#8B4513', // Коричневый
         warning: '#FFD700', // Желтый
+        error: '#e35757', // Ошибка
         // gray: '#808080', // Серый
       },
     },

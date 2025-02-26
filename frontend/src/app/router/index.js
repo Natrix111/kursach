@@ -24,6 +24,11 @@ const routes = [
         path: 'register',
         component: () => import('@/features/auth/ui/RegisterForm.vue'),
       },
+      {
+        name: 'email-confirm',
+        path: 'email-confirm',
+        component: () => import('@/features/auth/ui/EmailConfirm.vue'),
+      },
     ],
   },
   {

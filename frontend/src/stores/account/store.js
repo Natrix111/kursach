@@ -29,8 +29,7 @@ export const useStore = defineStore('account-store', () => {
 
       push.success('Вы успешно зарегистрированы')
 
-      // await router.push(`${Routes.auth.defaultPath}/email-confirm`)
-      await router.push(`${Routes.home.path}`)
+      await router.push(`${Routes.auth.defaultPath}/email-confirm`)
     } catch (error) {
       push.error(error.response.data.message)
     }

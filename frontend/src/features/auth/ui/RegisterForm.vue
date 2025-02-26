@@ -15,16 +15,23 @@
     />
     <form-field
       placeholder="Пароль"
+      type="password"
       v-model="password"
       :error="errors.password"
       class="register-form__field"
     />
     <form-field
       placeholder="Пароль"
+      type="password"
       v-model="passwordConfirm"
       :error="errors.passwordConfirm"
       class="register-form__field"
     />
+    <div class="login-form__text-link text-link__wrapper">
+      <router-link :to="`${Routes.auth.defaultPath}/login`" class="text-link"
+        >Уже есть аккаунт</router-link
+      >
+    </div>
     <button :disabled="!isValid" class="login-form__button btn btn--primary">Войти</button>
   </form>
 </template>
@@ -33,7 +40,7 @@
 import { registerSchema } from '../lib'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
-import { FormField } from '@/shared'
+import { FormField, Routes } from '@/shared'
 import { accountStore } from '@/stores'
 
 const { meta, errors, handleSubmit, defineField } = useForm({
@@ -54,7 +61,7 @@ const submit = handleSubmit((values) => register(values))
 
 <style scoped lang="scss">
 .register-form {
-  @apply bg-white p-8 rounded-lg shadow-md w-full max-w-md flex flex-col gap-4;
+  @apply flex flex-col gap-4;
 
   &__title {
     @apply font-serif text-3xl font-bold text-dark text-center mb-2;
