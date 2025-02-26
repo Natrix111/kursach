@@ -39,9 +39,5 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Вы успешно вышли!']);
     }
-    public function me()
-    {
-        return response()->json(Auth::user());
-    }
 
 }

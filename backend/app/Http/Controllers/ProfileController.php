@@ -10,9 +10,14 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\UpdateAvatarRequest;
 use App\Http\Requests\UpdateEmailRequest;
 use App\Http\Requests\UpdateUsernameRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
+    public function show()
+    {
+        return response()->json(Auth::user());
+    }
     public function updateUsername(UpdateUsernameRequest $request)
     {
         UpdateUsernameAction::execute(auth()->user(), $request->username);
