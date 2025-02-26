@@ -1,11 +1,6 @@
 import * as yup from 'yup'
 import { passwordValidation, usernameRegex } from '@/shared/validations'
 
-// export const loginSchema = {
-//   login: yup.string().email('Поле не соответствует формату'),
-//   password: passwordValidation,
-// }
-
 export const registerSchema = yup.object({
   username: yup
     .string()
