@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
-use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\FavoriteRecipeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->prefix('profile')->group(function () {
-    Route::get('/', [ProfileController::class, 'show']);
+    Route::get('/', [ProfileController::class, 'index']);
     Route::patch('/update/username', [ProfileController::class, 'updateUsername']);
     Route::patch('/update/email', [ProfileController::class, 'updateEmail']);
     Route::post('/update/avatar', [ProfileController::class, 'updateAvatar']);
@@ -41,6 +41,10 @@ Route::prefix('recipes')->group(function () {
         Route::post('/', [RecipeController::class, 'store']);
         Route::delete('{recipe}', [RecipeController::class, 'destroy']);
         Route::post('{recipe}', [RecipeController::class, 'update']);
+        Route::prefix('favorites')->group(function () {
+            Route::post('/{recipe}', [FavoriteRecipeController::class, 'store']);
+            Route::delete('/{recipe}', [FavoriteRecipeController::class, 'destroy']);
+        });
     });
 });
 

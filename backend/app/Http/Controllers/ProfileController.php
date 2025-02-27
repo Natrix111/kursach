@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function index()
     {
-        return response()->json(Auth::user());
+        $user = Auth::user();
+        $user->load('favoriteRecipes');
+        return response()->json(['user' => $user]);
     }
     public function updateUsername(UpdateUsernameRequest $request)
     {

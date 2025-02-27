@@ -7,7 +7,6 @@ use App\Http\Actions\DeleteRecipeAction;
 use App\Http\Actions\UpdateRecipeAction;
 use App\Http\Requests\RecipeRequest;
 use App\Models\Recipe;
-use Illuminate\Support\Facades\Auth;
 
 class RecipeController extends Controller
 {

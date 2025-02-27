@@ -20,6 +20,12 @@ class Recipe extends Model
         'images' => 'array',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'pivot',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
