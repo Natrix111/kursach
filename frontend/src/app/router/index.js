@@ -32,6 +32,11 @@ const routes = [
     ],
   },
   {
+    name: Routes.profile.name,
+    path: Routes.profile.path,
+    component: () => import('@/pages/profile/ProfilePage.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: `${Routes.home.path}`,
   },

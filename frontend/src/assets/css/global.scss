@@ -9,7 +9,7 @@ a,a:visited{
 }
 
 html, body {
-  @apply text-base h-full w-full;
+  @apply text-base h-full w-full bg-neutral;
 }
 
 body:has(.app-modal){
@@ -33,7 +33,7 @@ p {
 }
 
 input, textarea {
-  @apply px-4 py-2 border-2 border-neutral rounded-lg focus:outline-none focus:border-primary;
+  @apply px-4 py-2 border-2 border-neutral rounded-lg outline-none focus:outline-none focus:border-primary;
 }
 
 
