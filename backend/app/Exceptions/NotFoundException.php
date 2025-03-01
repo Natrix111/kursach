@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class FailedValidationException extends Exception
+class NotFoundException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Неверный формат данных. Пожалуйста, проверьте введенные данные.', 422);
+        parent::__construct('Объект не найден.', 404);
     }
 
     public function render()

@@ -8,7 +8,7 @@ class FailedCodeException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Код подтверждения неверный. Пожалуйста, проверьте и повторите ввод.', 401);
+        parent::__construct('Код подтверждения неверный. Пожалуйста, проверьте и повторите ввод.', 400);
     }
 
     public function render()

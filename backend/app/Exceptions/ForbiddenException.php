@@ -4,11 +4,11 @@ namespace App\Exceptions;
 
 use Exception;
 
-class FailedFormatOrSize extends Exception
+class ForbiddenException extends Exception
 {
     public function __construct()
     {
-        parent::__construct('Недопустимый формат или размер изображения(Загрузите файл не более 2МБ и формата png,jpg,jpeg)', 413);
+        parent::__construct('Недоступно!', 403);
     }
 
     public function render()

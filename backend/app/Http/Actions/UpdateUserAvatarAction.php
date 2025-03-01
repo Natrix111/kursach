@@ -13,6 +13,11 @@ class UpdateUserAvatarAction
     {
         $user = Auth::user();
 
+        if ($user->avatar) {
+            $oldPath = str_replace(Storage::disk('public')->url(''), '', $user->avatar);
+            Storage::disk('public')->delete($oldPath);
+        }
+
         if($request->hasFile('avatar')) {
 
             $name = $request->avatar->hashName();
@@ -21,9 +26,6 @@ class UpdateUserAvatarAction
             $photoUrl = Storage::disk('public')->url($path);
             $user->avatar = $photoUrl;
             $user->save();
-        }
-        else {
-            throw new FailedValidationException();
         }
     }
 }

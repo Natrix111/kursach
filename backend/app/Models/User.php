@@ -16,20 +16,14 @@ class User extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'password',
-        'remember_token',
         'verification_code',
-        'verification_code_created_at'
     ];
 
-
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'verification_code_created_at' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'verification_code_created_at' => 'datetime',
+    ];
 
     public function getJWTIdentifier()
     {
@@ -39,5 +33,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function favoriteRecipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'favorite_recipes')->withTimestamps();
     }
 }
