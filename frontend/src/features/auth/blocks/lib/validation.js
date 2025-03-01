@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { passwordValidation, usernameRegex } from '@/shared/validations'
+import { passwordValidation, usernameRegex } from '@/shared/validations/index.js'
 
 export const registerSchema = yup.object({
   username: yup

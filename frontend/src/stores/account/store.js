@@ -10,13 +10,16 @@ export const useStore = defineStore('account-store', () => {
   const router = useRouter()
 
   const user = ref(null)
+  const isLoadingUser = ref(false)
 
   const isAuth = computed(() => token.value)
 
-  const getUserData = async () => {
+  const getUser = async () => {
     if (isAuth.value) {
+      isLoadingUser.value = true
       const { data } = await accountApi.getUser()
       user.value = data.user
+      isLoadingUser.value = false
     }
   }
 
@@ -77,5 +80,40 @@ export const useStore = defineStore('account-store', () => {
     }
   }
 
-  return { token, isAuth, login, logout, register, sendEmailCode, verifyEmail, user, getUserData }
+  const changeUsername = async (username) => {
+    try {
+      const { data } = await accountApi.changeUsername(username)
+
+      push.success(data.message)
+      await getUser()
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
+  const changeEmail = async (email) => {
+    try {
+      const { data } = await accountApi.changeEmail(email)
+
+      push.success(data.message)
+      await getUser()
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
+  return {
+    token,
+    isAuth,
+    user,
+    isLoadingUser,
+    login,
+    logout,
+    register,
+    sendEmailCode,
+    verifyEmail,
+    getUser,
+    changeUsername,
+    changeEmail,
+  }
 })

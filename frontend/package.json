@@ -19,7 +19,6 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "lodash": "^4.17.21",
     "@babel/eslint-parser": "^7.26.5",
     "@eslint/js": "^9.14.0",
     "@vitejs/plugin-vue": "^5.2.1",
@@ -32,6 +31,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-vue": "^9.30.0",
     "globals": "^15.14.0",
+    "lodash": "^4.17.21",
     "postcss": "^8.4.49",
     "prettier": "^3.3.3",
     "sass": "^1.83.1",

@@ -37,11 +37,11 @@
 </template>
 
 <script setup>
-import { registerSchema } from '../lib'
+import { registerSchema } from '../lib/index.js'
 import { useForm } from 'vee-validate'
 import { computed } from 'vue'
-import { FormField, Routes } from '@/shared'
-import { accountStore } from '@/stores'
+import { FormField, Routes } from '@/shared/index.js'
+import { accountStore } from '@/stores/index.js'
 
 const { meta, errors, handleSubmit, defineField } = useForm({
   validationSchema: registerSchema,

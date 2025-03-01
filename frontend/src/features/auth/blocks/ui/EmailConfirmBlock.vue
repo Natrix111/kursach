@@ -24,8 +24,8 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { FormField } from '@/shared'
-import { accountApi } from '@/api'
+import { FormField } from '@/shared/index.js'
+import { accountApi } from '@/api/index.js'
 
 let interval = null
 

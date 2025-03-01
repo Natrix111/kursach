@@ -1,14 +1,14 @@
 <template>
   <div class="input-edit">
-    <template v-if="!isEdit">
+    <div v-if="!isEdit" class="input-edit__block">
       <span>{{ model }}</span>
       <button @click="editMode" class="input-edit__btn">Изменить</button>
-    </template>
-    <template v-else>
+    </div>
+    <form v-else @submit.prevent="confirmChange" class="input-edit__block">
       <input ref="inputRef" v-model="newValue" type="text" class="input-edit__input" />
-      <button @click="confirmChange" class="input-edit__save-btn">Сохранить</button>
-      <button @click="cancelChange" class="input-edit__cancel-btn">Отмена</button>
-    </template>
+      <button type="submit" class="input-edit__save-btn">Сохранить</button>
+      <button type="button" @click="cancelChange" class="input-edit__cancel-btn">Отмена</button>
+    </form>
   </div>
 </template>
 
@@ -21,6 +21,8 @@ const props = defineProps({
     default: null,
   },
 })
+
+const emit = defineEmits(['save'])
 
 const isEdit = ref(false)
 const newValue = ref(props.model ?? '')
@@ -35,10 +37,10 @@ const editMode = () => {
 }
 
 const confirmChange = async () => {
-  // if (newValue.value && newValue.value !== props.user.info) await changeInfo({ info: newValue.value })
-  // else newValue.value = props.user.info
-
   isEdit.value = false
+
+  if (newValue.value && props.model !== newValue.value) emit('save', newValue.value)
+  else newValue.value = props.model
 }
 
 const cancelChange = () => {
@@ -50,7 +52,9 @@ const cancelChange = () => {
 
 <style scoped lang="scss">
 .input-edit {
-  @apply flex gap-3;
+  &__block {
+    @apply flex gap-3;
+  }
 
   &__btn {
     @apply text-sm text-primary hover:text-accent duration-300;

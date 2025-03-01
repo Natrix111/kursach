@@ -15,22 +15,46 @@
         >
       </template>
       <template v-else>
+        <router-link :to="`${Routes.profile.path}`" class="header__auth-item">Профиль</router-link>
         <button @click="logout" class="header__auth-item">Выйти</button>
       </template>
     </div>
   </header>
+
   <div class="">
     <router-view></router-view>
   </div>
+
+  <div id="modals"></div>
+
+  <notivue v-slot="item">
+    <notivue-swipe :item="item">
+      <notification :item="item">
+        <notification-progress :item="item" />
+      </notification>
+    </notivue-swipe>
+  </notivue>
 </template>
 
 <script setup>
 import { Routes } from '@/shared'
 import { accountStore } from '@/stores'
+import { Notivue, Notification, NotificationProgress, NotivueSwipe } from 'notivue'
 import { storeToRefs } from 'pinia'
+import { onMounted, watch } from 'vue'
 
-const { logout } = accountStore.useStore()
+const { logout, getUser } = accountStore.useStore()
 const { isAuth } = storeToRefs(accountStore.useStore())
+
+onMounted(() => {
+  getUser()
+})
+
+watch(isAuth, () => {
+  if (isAuth.value) {
+    getUser()
+  }
+})
 </script>
 
 <style lang="scss">

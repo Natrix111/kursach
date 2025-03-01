@@ -17,17 +17,17 @@ const routes = [
       {
         name: 'login',
         path: 'login',
-        component: () => import('@/features/auth/ui/LoginForm.vue'),
+        component: () => import('@/features/auth/blocks/ui/LoginBlock.vue'),
       },
       {
         name: 'register',
         path: 'register',
-        component: () => import('@/features/auth/ui/RegisterForm.vue'),
+        component: () => import('@/features/auth/blocks/ui/RegisterBlock.vue'),
       },
       {
         name: 'email-confirm',
         path: 'email-confirm',
-        component: () => import('@/features/auth/ui/EmailConfirm.vue'),
+        component: () => import('@/features/auth/blocks/ui/EmailConfirmBlock.vue'),
       },
     ],
   },

@@ -1,12 +1,14 @@
 <template>
-  <div class="profile container">
+  <h2 v-if="isLoadingUser">Загрузка</h2>
+  <div v-else class="profile container">
     <div class="profile-header">
       <profile-avatar :avatar="user.avatar" />
 
-      <input-edit :model="user.name" />
-      <input-edit :model="user.email" />
+      <input-edit :model="user.username" @save="saveName" />
+      <input-edit :model="user.email" @save="saveEmail" />
 
       <button class="change-password-btn">Сменить пароль</button>
+      <button class="change-password-btn" v-if="!user.email_verify">Подтвердить почту</button>
     </div>
 
     <div class="profile-tabs">
@@ -25,86 +27,30 @@
     </div>
 
     <div class="profile-content">
-      <div v-if="activeTab === 'favorites'" class="favorites-tab">
-        <div class="recipe-grid">
-          <div v-for="recipe in favoriteRecipes" :key="recipe.id" class="recipe-card">
-            <img
-              src="@/assets/img/event-item-test.jpg"
-              alt="Изображение рецепта"
-              class="recipe-image"
-            />
-            <h3 class="recipe-title">{{ recipe.title }}</h3>
-            <p class="recipe-description">{{ recipe.description }}</p>
-          </div>
-        </div>
-      </div>
-      <div v-if="activeTab === 'my-recipes'" class="my-recipes-tab">
-        <div class="recipe-grid">
-          <div v-for="recipe in myRecipes" :key="recipe.id" class="recipe-card">
-            <img
-              src="@/assets/img/event-item-test.jpg"
-              alt="Изображение рецепта"
-              class="recipe-image"
-            />
-            <h3 class="recipe-title">{{ recipe.title }}</h3>
-            <p class="recipe-description">{{ recipe.description }}</p>
-          </div>
-        </div>
-      </div>
+      <recipes-list v-if="activeTab === 'favorites'" :recipes="favoriteRecipes" />
+      <recipes-list v-if="activeTab === 'my-recipes'" :recipes="myRecipes" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import ProfileAvatar from '@/features/profile/avatar/ProfileAvatar.vue'
-import InputEdit from '@/shared/ui/input/InputEdit.vue'
+import { ProfileAvatar, RecipesList } from '@/features'
+import { InputEdit } from '@/shared'
+import { storeToRefs } from 'pinia'
+import { accountStore } from '@/stores'
 
-const user = ref({
-  avatar: 'https://via.placeholder.com/150',
-  name: 'Иван Иванов',
-  email: 'ivan@example.com',
-  emailVerified: false,
-})
+const { changeUsername, changeEmail } = accountStore.useStore()
+const { user, isLoadingUser } = storeToRefs(accountStore.useStore())
 
 const activeTab = ref('favorites')
-const isChangePasswordModalOpen = ref(false)
 
-// Редактирование имени
-const isEditingName = ref(false)
-const editedName = ref('')
-
-const startEditingName = () => {
-  editedName.value = user.value.name
-  isEditingName.value = true
+const saveName = (newName) => {
+  changeUsername(newName)
 }
 
-const saveName = () => {
-  user.value.name = editedName.value
-  isEditingName.value = false
-}
-
-const cancelEditingName = () => {
-  isEditingName.value = false
-}
-
-// Редактирование почты
-const isEditingEmail = ref(false)
-const editedEmail = ref('')
-
-const startEditingEmail = () => {
-  editedEmail.value = user.value.email
-  isEditingEmail.value = true
-}
-
-const saveEmail = () => {
-  user.value.email = editedEmail.value
-  user.value.emailVerified = false
-  isEditingEmail.value = false
-}
-
-const cancelEditingEmail = () => {
-  isEditingEmail.value = false
+const saveEmail = (newEmail) => {
+  changeEmail(newEmail)
 }
 
 const favoriteRecipes = ref([
@@ -165,25 +111,5 @@ const myRecipes = ref([
 
 .profile-content {
   @apply bg-white p-6 rounded-lg;
-}
-
-.recipe-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
-}
-
-.recipe-card {
-  @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:scale-105;
-
-  .recipe-image {
-    @apply w-full h-48 object-cover;
-  }
-
-  .recipe-title {
-    @apply font-serif text-xl font-bold text-dark px-4 pt-4;
-  }
-
-  .recipe-description {
-    @apply text-gray-700 px-4 pb-4;
-  }
 }
 </style>

@@ -14,8 +14,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import { accountStore } from '@/stores'
-import { FormField, Routes } from '@/shared'
+import { accountStore } from '@/stores/index.js'
+import { FormField, Routes } from '@/shared/index.js'
 
 const { login } = accountStore.useStore()
 
