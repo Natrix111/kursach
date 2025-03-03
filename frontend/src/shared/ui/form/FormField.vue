@@ -37,6 +37,7 @@ const model = defineModel()
 
 <style scoped lang="scss">
 .form-field {
+  @apply w-full;
   &__error {
     @apply text-xs text-error;
   }

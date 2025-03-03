@@ -50,11 +50,7 @@ onMounted(() => {
   getUser()
 })
 
-watch(isAuth, () => {
-  if (isAuth.value) {
-    getUser()
-  }
-})
+watch(isAuth, () => getUser())
 </script>
 
 <style lang="scss">

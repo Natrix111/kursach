@@ -20,3 +20,9 @@ export const changeAvatar = (model) =>
 export const changeUsername = (username) => api.patch('profile/update/username', { username })
 
 export const changeEmail = (email) => api.patch('profile/update/email', { email })
+
+export const changePassword = (model) =>
+  api.patch('profile/change/password', {
+    old_password: model.oldPassword,
+    new_password: model.password,
+  })

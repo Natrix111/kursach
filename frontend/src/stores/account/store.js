@@ -4,6 +4,7 @@ import { accountApi } from '@/api'
 import { useRouter } from 'vue-router'
 import { Routes } from '@/shared'
 import { push } from 'notivue'
+import { modalStore } from '@/stores'
 
 export const useStore = defineStore('account-store', () => {
   const token = ref(localStorage.getItem('token'))
@@ -49,7 +50,7 @@ export const useStore = defineStore('account-store', () => {
 
       await router.push(Routes.home.path)
     } catch (error) {
-      push.error(error.response.data.message)
+      push.error(error.response.data.error)
     }
   }
 
@@ -102,6 +103,18 @@ export const useStore = defineStore('account-store', () => {
     }
   }
 
+  const changePassword = async (model) => {
+    try {
+      const { data } = await accountApi.changePassword(model)
+
+      modalStore.useStore().openModal(null)
+
+      push.success(data.message)
+    } catch (error) {
+      push.error(error.response.data.error)
+    }
+  }
+
   return {
     token,
     isAuth,
@@ -115,5 +128,6 @@ export const useStore = defineStore('account-store', () => {
     getUser,
     changeUsername,
     changeEmail,
+    changePassword,
   }
 })

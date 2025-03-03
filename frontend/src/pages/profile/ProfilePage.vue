@@ -7,8 +7,16 @@
       <input-edit :model="user.username" @save="saveName" />
       <input-edit :model="user.email" @save="saveEmail" />
 
-      <button class="change-password-btn">Сменить пароль</button>
-      <button class="change-password-btn" v-if="!user.email_verify">Подтвердить почту</button>
+      <button class="change-password-btn btn btn--secondary" @click="openModal('profile-password')">
+        Сменить пароль
+      </button>
+      <router-link
+        :to="`${Routes.auth.defaultPath}/email-confirm`"
+        class="change-password-btn btn btn--secondary"
+        v-if="!user.email_verify"
+      >
+        Подтвердить почту
+      </router-link>
     </div>
 
     <div class="profile-tabs">
@@ -31,16 +39,20 @@
       <recipes-list v-if="activeTab === 'my-recipes'" :recipes="myRecipes" />
     </div>
   </div>
+
+  <profile-password-modal />
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { ProfileAvatar, RecipesList } from '@/features'
-import { InputEdit } from '@/shared'
+import { InputEdit, Routes } from '@/shared'
 import { storeToRefs } from 'pinia'
-import { accountStore } from '@/stores'
+import { accountStore, modalStore } from '@/stores'
+import { ProfilePasswordModal } from '@/features'
 
 const { changeUsername, changeEmail } = accountStore.useStore()
+const { openModal } = modalStore.useStore()
 const { user, isLoadingUser } = storeToRefs(accountStore.useStore())
 
 const activeTab = ref('favorites')
@@ -91,10 +103,6 @@ const myRecipes = ref([
 
 .profile-header {
   @apply text-center mb-8 flex flex-col items-center gap-3;
-
-  .change-password-btn {
-    @apply bg-secondary text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-colors duration-200;
-  }
 }
 
 .profile-tabs {
