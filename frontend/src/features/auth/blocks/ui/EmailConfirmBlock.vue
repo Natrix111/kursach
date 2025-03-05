@@ -24,8 +24,10 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import { FormField } from '@/shared/index.js'
-import { accountApi } from '@/api/index.js'
+import { FormField } from '@/shared'
+import { accountStore } from '@/stores'
+
+const { sendEmailCode, verifyEmail } = accountStore.useStore()
 
 let interval = null
 
@@ -34,8 +36,7 @@ const timer = computed(() => formatTime(time.value))
 
 const code = ref(null)
 
-const submit = () =>
-  code.value && code.value.length === 6 ? accountApi.verifyEmail(code.value) : null
+const submit = () => (code.value && code.value.length === 6 ? verifyEmail(code.value) : null)
 
 const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60)
@@ -44,7 +45,7 @@ const formatTime = (seconds) => {
 }
 
 const startTimer = () => {
-  accountApi.sendEmail()
+  sendEmailCode()
 
   time.value = 10
   interval = setInterval(() => {

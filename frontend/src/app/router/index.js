@@ -37,6 +37,16 @@ const routes = [
     component: () => import('@/pages/profile/ProfilePage.vue'),
   },
   {
+    name: Routes.recipes.name,
+    path: Routes.recipes.path,
+    component: () => import('@/pages/recipes/RecipesPage.vue'),
+  },
+  {
+    name: Routes.recipe.name,
+    path: Routes.recipe.path,
+    component: () => import('@/pages/recipes/RecipePage.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: `${Routes.home.path}`,
   },

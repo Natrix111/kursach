@@ -9,7 +9,7 @@ a,a:visited{
 }
 
 html, body {
-  @apply text-base h-full w-full bg-neutral;
+  @apply text-base h-full w-full bg-neutral overflow-x-hidden;
 }
 
 body:has(.app-modal){

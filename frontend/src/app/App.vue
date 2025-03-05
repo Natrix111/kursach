@@ -3,7 +3,7 @@
     <h1 class="header__logo logo">ЕдаОК</h1>
     <nav class="header__nav">
       <router-link :to="Routes.home.path" class="header__nav-item">Главная</router-link>
-      <router-link to="" class="header__nav-item">Каталог</router-link>
+      <router-link :to="Routes.recipes.path" class="header__nav-item">Рецепты</router-link>
     </nav>
     <div class="header__auth">
       <template v-if="!isAuth">
