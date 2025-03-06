@@ -1,80 +1,72 @@
 <template>
-  <div class="recipe-detail">
-    <div class="recipe-gallery">
-      <img :src="activeImage" alt="Изображение рецепта" class="recipe-main-image" />
-      <div class="recipe-thumbnails">
-        <img
-          v-for="(image, index) in recipe.images"
-          :key="index"
-          :src="image"
-          alt="Изображение рецепта"
-          class="thumbnail"
-          :class="{ 'thumbnail-active': activeImage === image }"
-          @click="activeImage = image"
-        />
+  <div class="recipe container">
+    <recipe-slider :images="recipe.images" />
+
+    <div class="recipe__info">
+      <favorite-button
+        :active="isFavorite"
+        @click.prevent="toggleFavorite"
+        class="recipe__favorite-button"
+      />
+
+      <div class="recipe__actions">
+        <button class="recipe__edit btn btn--secondary" @click="openModal('edit-recipe')">
+          ✏️ Редактировать
+        </button>
+        <button class="recipe__delete btn btn--danger">🗑 Удалить</button>
       </div>
-    </div>
 
-    <!-- Основная информация о рецепте -->
-    <div class="recipe-info">
-      <h1 class="recipe-title">{{ recipe.title }}</h1>
-      <p class="recipe-description">{{ recipe.description }}</p>
+      <h1 class="recipe__title">{{ recipe.title }}</h1>
+      <p class="recipe__description">{{ recipe.description }}</p>
 
-      <!-- Ингредиенты -->
-      <div class="recipe-section">
-        <h2 class="section-title">Ингредиенты</h2>
-        <ul class="ingredients-list">
+      <section class="recipe__section">
+        <h2 class="recipe__section-title">Ингредиенты</h2>
+        <ul class="recipe__ingredients">
           <li
             v-for="(ingredient, index) in recipe.ingredients"
             :key="index"
-            class="ingredient-item"
+            class="recipe__ingredient"
           >
             {{ ingredient }}
           </li>
         </ul>
-      </div>
+      </section>
 
-      <!-- Инструкции -->
-      <div class="recipe-section">
-        <h2 class="section-title">Инструкции</h2>
-        <p class="instructions">{{ recipe.instructions }}</p>
-      </div>
+      <section class="recipe__section">
+        <h2 class="recipe__section-title">Инструкции</h2>
+        <p class="recipe__instructions">{{ recipe.instructions }}</p>
+      </section>
 
-      <!-- Кнопка добавления в избранное -->
-      <button @click="toggleFavorite" class="favorite-button">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-8 w-8"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          :class="{ 'text-primary': isFavorite, 'text-gray-400': !isFavorite }"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-          />
-        </svg>
-        <span class="favorite-text">{{ isFavorite ? 'В избранном' : 'Добавить в избранное' }}</span>
-      </button>
+      <section class="recipe__section">
+        <h2 class="recipe__section-title">Отзывы</h2>
+
+        <review-form />
+
+        <review-list :reviews="reviews" />
+      </section>
     </div>
   </div>
+  <recipe-edit-modal />
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { FavoriteButton } from '@/shared/index.js'
+import RecipeSlider from '@/features/recipes/slider/ui/RecipeSlider.vue'
+import { ReviewForm, ReviewList } from '@/features/index.js'
+import { modalStore } from '@/stores'
+import RecipeEditModal from '@/features/recipes/modal/ui/RecipeEditModal.vue'
 
+const { openModal } = modalStore.useStore()
+
+// Фиктивные данные рецепта
 const recipe = {
   id: 3,
   user_id: 8,
   title: 'рецепт 1',
   description: 'описание',
   ingredients: ['хлеб', 'молоко'],
-  instructions: `1. Нарежьте хлеб. фыв
-  2. Залейте молоком.
-  3. Наслаждайтесь!`,
+  instructions: `1. Нарежьте хлеб.\n2. Залейте молоком.\n3. Наслаждайтесь!`,
   images: [
     'http://localhost/api/storage/recipes/aeEmKaKzWmskvMYAtqdy3GgWG1APal84dSvIkIe0.png',
     'http://localhost/api/storage/recipes/EyMc3YOHa5buFCbq7XpMOI8hIptdc7FE2ygnmtbL.jpg',
@@ -82,84 +74,100 @@ const recipe = {
   ],
 }
 
-const activeImage = ref(recipe.images[0])
-const isFavorite = ref(false)
+// Авторизован ли пользователь (здесь просто true для примера)
+const isAuthenticated = ref(true)
 
+// Избранное
+const isFavorite = ref(false)
 const toggleFavorite = () => {
   isFavorite.value = !isFavorite.value
+}
+
+// Отзывы (фиктивные данные)
+const reviews = ref([
+  {
+    id: 1,
+    name: 'Иван Петров',
+    avatar: 'https://i.pravatar.cc/50?img=1',
+    text: 'Отличный рецепт! Получилось очень вкусно.',
+  },
+  {
+    id: 2,
+    name: 'Анна Смирнова',
+    avatar: 'https://i.pravatar.cc/50?img=2',
+    text: 'Добавила немного специй, и вышло супер!',
+  },
+])
+
+// Новый отзыв
+const newReview = ref('')
+
+// Функция отправки отзыва
+const submitReview = () => {
+  if (!newReview.value.trim()) return
+
+  reviews.value.push({
+    id: reviews.value.length + 1,
+    name: 'Вы', // В реальном приложении заменить на имя пользователя
+    avatar: 'https://i.pravatar.cc/50?img=3', // В реальном приложении использовать аватар пользователя
+    text: newReview.value.trim(),
+  })
+
+  newReview.value = '' // Очистить поле
 }
 </script>
 
 <style scoped lang="scss">
-.recipe-detail {
-  @apply max-w-6xl mx-auto p-6;
-}
+.recipe {
+  @apply mx-auto my-6;
 
-.recipe-gallery {
-  @apply mb-8;
-
-  .recipe-main-image {
-    @apply w-full h-96 object-cover rounded-lg shadow-md;
+  &__info {
+    @apply relative bg-white p-8 rounded-lg shadow-md;
   }
 
-  .recipe-thumbnails {
-    @apply flex gap-4 mt-4 overflow-x-auto;
-
-    .thumbnail {
-      @apply w-24 h-24 object-cover rounded-lg cursor-pointer transition-opacity duration-200;
-
-      &:hover {
-        @apply opacity-75;
-      }
-
-      &-active {
-        @apply border-2 border-primary;
-      }
-    }
+  &__favorite-button {
+    @apply absolute top-4 right-4;
   }
-}
 
-.recipe-info {
-  @apply bg-white p-8 rounded-lg shadow-md;
+  &__actions {
+    @apply flex justify-end gap-4 mb-4;
+  }
 
-  .recipe-title {
+  &__edit {
+    @apply bg-blue-500 text-white px-4 py-2 rounded-lg;
+  }
+
+  &__delete {
+    @apply bg-red-500 text-white px-4 py-2 rounded-lg;
+  }
+
+  &__title {
     @apply font-serif text-4xl font-bold text-dark mb-4;
   }
 
-  .recipe-description {
+  &__description {
     @apply text-gray-700 mb-8;
   }
 
-  .recipe-section {
+  &__section {
     @apply mb-8;
-
-    .section-title {
-      @apply font-serif text-2xl font-bold text-dark mb-4;
-    }
-
-    .ingredients-list {
-      @apply list-disc list-inside;
-
-      .ingredient-item {
-        @apply text-gray-700 mb-2;
-      }
-    }
-
-    .instructions {
-      @apply text-gray-700;
-    }
   }
 
-  .favorite-button {
-    @apply flex items-center gap-2 px-6 py-2 bg-white border-2 border-primary rounded-lg text-primary hover:bg-primary hover:text-white transition-colors duration-200;
+  &__section-title {
+    @apply font-serif text-2xl font-bold text-dark mb-4;
+  }
 
-    svg {
-      @apply h-6 w-6;
-    }
+  &__ingredients {
+    @apply list-disc list-inside;
+  }
 
-    .favorite-text {
-      @apply font-sans font-bold;
-    }
+  &__ingredient {
+    @apply text-gray-700 mb-2;
+  }
+
+  &__instructions {
+    @apply text-gray-700;
+    white-space: pre-line;
   }
 }
 </style>

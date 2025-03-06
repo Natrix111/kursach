@@ -1,6 +1,6 @@
 <template>
   <router-link :to="{ name: Routes.recipe.name, params: { id: recipe.id } }">
-    <div class="recipes-item">
+    <article class="recipes-item">
       <img
         src="@/assets/img/event-item-test.jpg"
         alt="Изображение рецепта"
@@ -13,7 +13,7 @@
         @click.prevent="toggleFavorite"
         class="recipes-item__favorite-button"
       />
-    </div>
+    </article>
   </router-link>
 </template>
 

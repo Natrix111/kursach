@@ -47,6 +47,26 @@ const routes = [
     component: () => import('@/pages/recipes/RecipePage.vue'),
   },
   {
+    name: Routes.recipeCreate.name,
+    path: Routes.recipeCreate.path,
+    component: () => import('@/pages/recipes/RecipeCreatePage.vue'),
+    // beforeEnter: async (to, from, next) => {
+    //   const authStore = useAuthStore()
+    //   const recipeId = to.params.id
+    //
+    //   try {
+    //     const recipe = await fetchRecipe(recipeId) // Запрашиваем рецепт
+    //     if (authStore.user.id === recipe.user_id) {
+    //       next() // Разрешаем переход
+    //     } else {
+    //       next('/') // Если нет прав, редиректим на главную
+    //     }
+    //   } catch (error) {
+    //     next('/') // В случае ошибки редирект
+    //   }
+    // }
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: `${Routes.home.path}`,
   },

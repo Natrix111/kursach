@@ -2,7 +2,7 @@
   <div class="recipes container">
     <h2 class="recipes__title">Рецепты</h2>
 
-    <div class="flex gap-4 w-full">
+    <div class="flex gap-4 w-full items-center">
       <search-input v-model="searchQuery" placeholder="Поиск рецептов..." />
       <sort-select :options="sortOptions" v-model="selectedSort" />
     </div>

@@ -25,4 +25,8 @@ export const Routes = {
     path: '/recipes/:id',
     name: 'recipe',
   },
+  recipeCreate: {
+    path: '/recipes/create',
+    name: 'recipeCreate',
+  },
 }
