@@ -18,7 +18,7 @@ class RecipeController extends Controller
 
     public function show(Recipe $recipe)
     {
-        return response()->json($recipe);
+        return response()->json($recipe->load(['reviews.user:id,username,avatar']));
     }
 
     public function store(RecipeRequest $request)

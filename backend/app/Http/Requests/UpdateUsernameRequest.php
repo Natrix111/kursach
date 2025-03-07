@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\FailedValidationException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUsernameRequest extends FormRequest
@@ -20,8 +18,13 @@ class UpdateUsernameRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages()
     {
-        throw new FailedValidationException();
+        return [
+            'username.required' => 'Поле "Имя пользователя" обязательно для заполнения.',
+            'username.string' => 'Имя пользователя должно быть строкой.',
+            'username.max' => 'Имя пользователя не должно превышать 255 символов.',
+        ];
     }
+
 }

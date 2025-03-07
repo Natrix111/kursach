@@ -5,6 +5,7 @@ use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FavoriteRecipeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,8 +36,8 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::prefix('recipes')->group(function () {
-    Route::get('/', [RecipeController::class, 'index']);
     Route::get('{recipe}', [RecipeController::class, 'show']);
+    Route::get('/', [RecipeController::class, 'index']);
     Route::middleware('auth:api')->group(function () {
         Route::post('/', [RecipeController::class, 'store']);
         Route::delete('{recipe}', [RecipeController::class, 'destroy']);
@@ -46,5 +47,11 @@ Route::prefix('recipes')->group(function () {
             Route::delete('/{recipe}', [FavoriteRecipeController::class, 'destroy']);
         });
     });
+});
+
+Route::middleware('auth:api')->prefix('reviews')->group(function () {
+    Route::post('/', [ReviewController::class, 'store']);
+    Route::delete('{review}', [ReviewController::class, 'destroy']);
+    Route::put('{review}', [ReviewController::class, 'update']);
 });
 

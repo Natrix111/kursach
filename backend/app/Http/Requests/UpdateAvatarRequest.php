@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\FailedFormatOrSize;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 
 class UpdateAvatarRequest extends FormRequest
 {
@@ -23,8 +21,14 @@ class UpdateAvatarRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages(): array
     {
-        throw new FailedFormatOrSize();
+        return [
+            'avatar.required' => 'Вы должны загрузить изображение для аватара.',
+            'avatar.image' => 'Файл должен быть изображением.',
+            'avatar.mimes' => 'Аватар должен быть в формате: JPEG, JPG или PNG.',
+            'avatar.max' => 'Размер аватара не должен превышать 2MB.',
+        ];
     }
+
 }

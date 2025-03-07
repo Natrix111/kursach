@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\FailedValidationException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -38,8 +36,25 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages()
     {
-        throw new FailedValidationException();
+        return [
+            'username.required' => 'Поле "Имя пользователя" обязательно для заполнения.',
+            'username.string' => 'Имя пользователя должно быть строкой.',
+            'username.max' => 'Имя пользователя не должно превышать 255 символов.',
+            'username.regex' => 'Имя пользователя может содержать только буквы, пробелы и специальные символы (!#%&\'*+-/=?_~).',
+
+            'email.required' => 'Поле "E-mail" обязательно для заполнения.',
+            'email.string' => 'E-mail должен быть строкой.',
+            'email.max' => 'E-mail не должен превышать 255 символов.',
+            'email.regex' => 'Введите корректный E-mail в формате example@domain.com.',
+
+            'password.required' => 'Поле "Пароль" обязательно для заполнения.',
+            'password.string' => 'Пароль должен быть строкой.',
+            'password.min' => 'Пароль должен содержать минимум 6 символов.',
+            'password.max' => 'Пароль не должен превышать 128 символов.',
+            'password.regex' => 'Пароль должен содержать хотя бы одну заглавную букву и один специальный символ (!#%&\'*+-/=?_`~).',
+        ];
     }
+
 }

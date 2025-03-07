@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\FailedValidationException;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 
 class UpdateEmailRequest extends FormRequest
 {
@@ -25,8 +23,14 @@ class UpdateEmailRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages(): array
     {
-        throw new FailedValidationException();
+        return [
+            'email.required' => 'Поле "E-mail" обязательно для заполнения.',
+            'email.string' => 'E-mail должен быть строкой.',
+            'email.max' => 'E-mail не должен превышать 255 символов.',
+            'email.regex' => 'Введите корректный E-mail в формате example@domain.com.',
+        ];
     }
+
 }

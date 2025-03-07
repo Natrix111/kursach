@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Exceptions\FailedValidationException;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -21,9 +19,17 @@ class LoginRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function messages()
     {
-        throw new FailedValidationException();
+        return [
+            'email.required' => 'Поле "E-mail" обязательно для заполнения.',
+            'email.email' => 'Поле "E-mail" должно содержать корректный адрес электронной почты.',
+
+            'password.required' => 'Поле "Пароль" обязательно для заполнения.',
+            'password.string' => 'Пароль должен быть строкой.',
+            'password.min' => 'Пароль должен содержать минимум 6 символов.',
+        ];
     }
+
 }
 
