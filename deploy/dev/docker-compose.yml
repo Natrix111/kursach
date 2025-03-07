@@ -22,7 +22,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: booking
+      POSTGRES_DB: cooking
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     networks:
