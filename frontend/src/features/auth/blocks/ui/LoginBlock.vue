@@ -3,14 +3,19 @@
     <h2 class="login-form__title">Вход</h2>
     <form-field placeholder="Email" v-model="email" class="login-form__field" />
     <form-field placeholder="Пароль" v-model="password" type="password" class="login-form__field" />
+    <div class="login-form__text-link text-link__wrapper">
+      <router-link :to="`${Routes.auth.defaultPath}/register`" class="text-link"
+        >У меня еще нет аккаунта</router-link
+      >
+    </div>
     <button type="submit" class="login-form__button btn btn--primary">Войти</button>
   </form>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { accountStore } from '@/stores'
-import { FormField } from '@/shared'
+import { accountStore } from '@/stores/index.js'
+import { FormField, Routes } from '@/shared/index.js'
 
 const { login } = accountStore.useStore()
 
@@ -24,7 +29,7 @@ const submit = () => {
 
 <style scoped lang="scss">
 .login-form {
-  @apply bg-white p-8 rounded-lg shadow-md w-full max-w-md flex flex-col gap-4;
+  @apply flex flex-col gap-4;
 
   &__title {
     @apply font-serif text-3xl font-bold text-dark text-center mb-2;

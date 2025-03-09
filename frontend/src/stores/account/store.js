@@ -4,19 +4,23 @@ import { accountApi } from '@/api'
 import { useRouter } from 'vue-router'
 import { Routes } from '@/shared'
 import { push } from 'notivue'
+import { modalStore } from '@/stores'
 
 export const useStore = defineStore('account-store', () => {
   const token = ref(localStorage.getItem('token'))
   const router = useRouter()
 
   const user = ref(null)
+  const isLoadingUser = ref(false)
 
   const isAuth = computed(() => token.value)
 
-  const getUserData = async () => {
+  const getUser = async () => {
     if (isAuth.value) {
+      isLoadingUser.value = true
       const { data } = await accountApi.getUser()
       user.value = data.user
+      isLoadingUser.value = false
     }
   }
 
@@ -29,10 +33,9 @@ export const useStore = defineStore('account-store', () => {
 
       push.success('Вы успешно зарегистрированы')
 
-      // await router.push(`${Routes.auth.defaultPath}/email-confirm`)
-      await router.push(`${Routes.home.path}`)
+      await router.push(`${Routes.auth.defaultPath}/email-confirm`)
     } catch (error) {
-      push.error(error.response.data.message)
+      push.error(error.response.data.error)
     }
   }
 
@@ -47,7 +50,7 @@ export const useStore = defineStore('account-store', () => {
 
       await router.push(Routes.home.path)
     } catch (error) {
-      push.error(error.response.data.message)
+      push.error(error.response.data.error)
     }
   }
 
@@ -62,7 +65,7 @@ export const useStore = defineStore('account-store', () => {
     try {
       await accountApi.sendEmailCode()
     } catch (error) {
-      push.error(error.response.data.message)
+      push.error(error.response.data.error)
     }
   }
 
@@ -74,9 +77,57 @@ export const useStore = defineStore('account-store', () => {
 
       await router.push(`${Routes.home.path}`)
     } catch (error) {
+      push.error(error.response.data.error)
+    }
+  }
+
+  const changeUsername = async (username) => {
+    try {
+      const { data } = await accountApi.changeUsername(username)
+
+      push.success(data.message)
+      await getUser()
+    } catch (error) {
       push.error(error.response.data.message)
     }
   }
 
-  return { token, isAuth, login, logout, register, sendEmailCode, verifyEmail, user, getUserData }
+  const changeEmail = async (email) => {
+    try {
+      const { data } = await accountApi.changeEmail(email)
+
+      push.success(data.message)
+      await getUser()
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
+  const changePassword = async (model) => {
+    try {
+      const { data } = await accountApi.changePassword(model)
+
+      modalStore.useStore().openModal(null)
+
+      push.success(data.message)
+    } catch (error) {
+      push.error(error.response.data.error)
+    }
+  }
+
+  return {
+    token,
+    isAuth,
+    user,
+    isLoadingUser,
+    login,
+    logout,
+    register,
+    sendEmailCode,
+    verifyEmail,
+    getUser,
+    changeUsername,
+    changeEmail,
+    changePassword,
+  }
 })

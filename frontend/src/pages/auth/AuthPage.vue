@@ -1,6 +1,8 @@
 <template>
   <div class="auth-page">
-    <router-view></router-view>
+    <div class="auth-page__wrapper">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -10,5 +12,9 @@
 .auth-page {
   @apply flex items-center justify-center bg-neutral p-4;
   min-height: calc(100vh - 64px);
+
+  &__wrapper {
+    @apply bg-white p-8 rounded-lg shadow-md w-full max-w-md;
+  }
 }
 </style>

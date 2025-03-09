@@ -1,5 +1,5 @@
-import { api, apiStatuses } from '@/shared'
-import { accountStore } from '@/entities'
+import { api } from '@/shared'
+import { accountStore } from '@/stores'
 
 /**
  * `Interceptors` - позволяет перехватывать запрос api,
@@ -17,8 +17,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (reject) => {
-    // здесь может быть ваша обработка ошибок в зависимости от статуса ошибки и т.п.
-    if (reject.status === apiStatuses.unauthorized) {
+    if (reject.status === 401) {
       accountStore.useStore().logout()
     }
 
