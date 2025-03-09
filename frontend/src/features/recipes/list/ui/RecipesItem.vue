@@ -1,15 +1,11 @@
 <template>
   <router-link :to="{ name: Routes.recipe.name, params: { id: recipe.id } }">
     <article class="recipes-item">
-      <img
-        src="@/assets/img/event-item-test.jpg"
-        alt="Изображение рецепта"
-        class="recipes-item__image"
-      />
+      <img :src="recipe.images[0]" alt="Изображение рецепта" class="recipes-item__image" />
       <h3 class="recipes-item__title">{{ recipe.title }}</h3>
       <p class="recipes-item__description">{{ recipe.description }}</p>
       <favorite-button
-        :active="isFavorite"
+        :active="recipe.is_favorite"
         @click.prevent="toggleFavorite"
         class="recipes-item__favorite-button"
       />
@@ -19,26 +15,26 @@
 
 <script setup>
 import { Routes } from '@/shared'
-import { FavoriteButton } from '@/shared/index.js'
-import { ref } from 'vue'
+import { FavoriteButton } from '@/shared'
+import { recipesStore } from '@/stores'
 
-defineProps({
+const props = defineProps({
   recipe: {
     type: Object,
     required: true,
   },
 })
 
-const isFavorite = ref(false)
+const { toggleFavoriteRecipe } = recipesStore.useStore()
 
-const toggleFavorite = () => {
-  isFavorite.value = !isFavorite.value
+const toggleFavorite = async () => {
+  await toggleFavoriteRecipe(props.recipe.id, !props.recipe.is_favorite)
 }
 </script>
 
 <style scoped lang="scss">
 .recipes-item {
-  @apply relative bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer;
+  @apply relative bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 cursor-pointer h-full;
 
   &__image {
     @apply w-full h-48 object-cover;

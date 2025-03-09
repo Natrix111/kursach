@@ -14,42 +14,13 @@
 
 <script setup>
 import { RecipesList } from '@/features'
-import { ref, computed } from 'vue'
-import { SearchInput, SortSelect } from '@/shared/index.js'
+import { SearchInput, SortSelect } from '@/shared'
+import { recipesStore } from '@/stores'
+import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
 
-const recipes = ref([
-  {
-    id: 1,
-    user_id: 8,
-    title: 'Рецепт 1',
-    description: 'описание',
-    ingredients: ['хлеб', 'молоко'],
-    instructions: 'инструкция',
-    images: ['http://localhost/api/storage/recipes/2IQLdx9rR4A5zda90X2NPxkxiNJMM0Qc90ekOaaT.png'],
-  },
-  {
-    id: 2,
-    user_id: 8,
-    title: 'Рецепт 2',
-    description: 'описание',
-    ingredients: ['хлеб', 'молоко', 'яйца'],
-    instructions: 'инструкция',
-    images: ['http://localhost/api/storage/recipes/yspByI6kr3LZsPB8YnV1qcCB7wEwCZPi1gOuSLcH.png'],
-  },
-  {
-    id: 3,
-    user_id: 8,
-    title: 'Рецепт 3',
-    description: 'описание',
-    ingredients: ['хлеб'],
-    instructions: 'инструкция',
-    images: [
-      'http://localhost/api/storage/recipes/aeEmKaKzWmskvMYAtqdy3GgWG1APal84dSvIkIe0.png',
-      'http://localhost/api/storage/recipes/EyMc3YOHa5buFCbq7XpMOI8hIptdc7FE2ygnmtbL.jpg',
-      'http://localhost/api/storage/recipes/N8hcrc319ybcHbgOhGx42up1KDCDcyBRBZ3FwR1Q.jpg',
-    ],
-  },
-])
+const { getRecipes } = recipesStore.useStore()
+const { recipes } = storeToRefs(recipesStore.useStore())
 
 const sortOptions = [
   { name: 'По дате', value: 'date' },
@@ -79,9 +50,11 @@ const filteredAndSortedRecipes = computed(() => {
     case 'ingredients':
       return filteredRecipes.sort((a, b) => a.ingredients.length - b.ingredients.length)
     default:
-      return filteredRecipes.sort((a, b) => b.id - a.id) // По умолчанию сортируем по дате (id)
+      return filteredRecipes.sort((a, b) => b.id - a.id)
   }
 })
+
+onMounted(() => getRecipes())
 </script>
 
 <style scoped lang="scss">

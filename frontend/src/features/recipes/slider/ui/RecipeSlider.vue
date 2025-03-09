@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps({
   images: {
@@ -26,6 +26,14 @@ const props = defineProps({
 })
 
 const activeImage = ref(props.images[0])
+
+watch(
+  () => props.images,
+  (newImages) => {
+    activeImage.value = newImages.length > 0 ? newImages[0] : null
+  },
+  { deep: true },
+)
 </script>
 
 <style scoped lang="scss">
