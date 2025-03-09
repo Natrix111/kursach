@@ -1,78 +1,52 @@
 <template>
-  <form @submit.prevent="handleSubmit">
-    <div class="recipe-form__field">
-      <label for="title" class="recipe-form__label">Название рецепта</label>
-      <input
-        id="title"
-        v-model="formData.title"
-        type="text"
-        class="recipe-form__input"
-        placeholder="Введите название рецепта"
-        required
-      />
-    </div>
+  <form class="recipe-form" @submit.prevent="submit">
+    <form-field
+      label="Название рецепта"
+      v-model="title"
+      :error="errors.title"
+      placeholder="Введите название рецепта"
+    />
 
-    <div class="recipe-form__field">
-      <label for="description" class="recipe-form__label">Описание</label>
-      <textarea
-        id="description"
-        v-model="formData.description"
-        class="recipe-form__textarea"
-        placeholder="Введите описание"
-        required
-      ></textarea>
-    </div>
+    <form-field
+      label="Описание"
+      v-model="description"
+      :error="errors.description"
+      placeholder="Введите описание"
+      type="textarea"
+    />
 
-    <div class="recipe-form__field">
-      <label for="ingredients" class="recipe-form__label">Ингредиенты</label>
-      <textarea
-        id="ingredients"
-        v-model="formData.ingredients"
-        class="recipe-form__textarea"
-        placeholder="Введите ингредиенты, каждый с новой строки"
-        required
-      ></textarea>
-    </div>
+    <form-field
+      label="Ингредиенты"
+      v-model="ingredients"
+      :error="errors.ingredients"
+      placeholder="Введите ингредиенты, каждый с новой строки"
+      type="textarea"
+    />
 
-    <div class="recipe-form__field">
-      <label for="instructions" class="recipe-form__label">Инструкции</label>
-      <textarea
-        id="instructions"
-        v-model="formData.instructions"
-        class="recipe-form__textarea"
-        placeholder="Введите инструкцию"
-        required
-      ></textarea>
-    </div>
+    <form-field
+      label="Инструкции"
+      v-model="instructions"
+      :error="errors.instructions"
+      placeholder="Введите инструкцию"
+      type="textarea"
+    />
 
-    <div class="recipe-form__field">
-      <label for="images" class="recipe-form__label">Изображения</label>
-      <input
-        type="file"
-        id="images"
-        @change="handleFileChange"
-        class="recipe-form__input"
-        accept="image/*"
-        multiple
-      />
-      <div v-if="formData.images.length">
-        <p>Выбранные изображения:</p>
-        <ul>
-          <li v-for="(image, index) in formData.images" :key="index">{{ image.name }}</li>
-        </ul>
-      </div>
-    </div>
+    <recipe-images-upload @upload="uploadImages" />
 
-    <button type="submit" class="recipe-form__submit-button">
+    <button :disabled="!isValid" class="recipe-form__submit-button btn btn--primary">
       {{ isEdit ? 'Сохранить' : 'Создать' }}
     </button>
   </form>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useForm } from 'vee-validate'
+import { computed, ref, watch } from 'vue'
+import { FormField } from '@/shared'
+import { recipeSchema } from '../lib'
+import { RecipeImagesUpload } from '@/features/index.js'
+import { login } from '@/api/account/index.js'
 
-// Пропсы для переданных данных рецепта (если редактируем)
 const props = defineProps({
   recipe: {
     type: Object,
@@ -85,46 +59,67 @@ const props = defineProps({
       images: [],
     }),
   },
+  serverErrors: {
+    type: Object,
+    default: () => ({}),
+  },
 })
 
-const formData = ref({ ...props.recipe })
+const emit = defineEmits(['submit'])
 
-const handleSubmit = () => {
-  // Отправка данных на сервер
-  console.log('Данные формы:', formData.value)
+const { meta, errors, handleSubmit, defineField, setErrors } = useForm({
+  validationSchema: recipeSchema,
+  initialValues: props.recipe,
+})
+
+const images = ref([])
+
+const [title] = defineField('title')
+const [description] = defineField('description')
+const [ingredients] = defineField('ingredients')
+const [instructions] = defineField('instructions')
+
+const isEdit = computed(() => !!props.recipe.title)
+const isValid = computed(() => meta.value.valid)
+
+//
+// watch(
+//   () => props.recipe,
+//   (newRecipe) => {
+//     setValues(newRecipe)
+//   },
+//   { deep: true },
+// )
+
+const uploadImages = (newImages) => {
+  images.value = newImages
 }
 
-const handleFileChange = (event) => {
-  const files = event.target.files
-  if (files.length) {
-    formData.value.images = Array.from(files)
-  }
-}
+const submit = handleSubmit((values) => emit('submit', { ...values, images: images.value }))
+
+watch(
+  () => props.serverErrors,
+  (newErrors) => {
+    console.log(newErrors)
+    if (Object.keys(newErrors).length) {
+      setErrors({
+        title: newErrors.title?.[0] || '',
+        description: newErrors.description?.[0] || '',
+        ingredients: newErrors.ingredients?.[0] || '',
+        instructions: newErrors.instructions?.[0] || '',
+        images: newErrors.images?.[0] || '',
+      })
+    }
+  },
+)
 </script>
 
 <style scoped lang="scss">
 .recipe-form {
-  @apply bg-white p-6 rounded-lg shadow-md;
-
-  &__field {
-    @apply mb-6;
-  }
-
-  &__label {
-    @apply block text-lg font-bold mb-2;
-  }
-
-  &__input,
-  &__textarea {
-    @apply w-full p-2 border border-gray-300 rounded-md;
-  }
-
-  &__textarea {
-    @apply h-40 resize-none;
-  }
+  @apply flex flex-col gap-4;
 
   &__submit-button {
-    @apply py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600;
+    @apply mt-4;
   }
 }
 </style>

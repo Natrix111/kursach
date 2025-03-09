@@ -20,13 +20,12 @@ export const Routes = {
   recipes: {
     path: '/recipes',
     name: 'recipes',
+    children: {
+      create: 'create',
+    },
   },
   recipe: {
     path: '/recipes/:id',
     name: 'recipe',
-  },
-  recipeCreate: {
-    path: '/recipes/create',
-    name: 'recipeCreate',
   },
 }

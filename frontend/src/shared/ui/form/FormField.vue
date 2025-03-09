@@ -1,7 +1,17 @@
 <template>
   <div class="form-field">
+    <label v-if="label" for="input">{{ label }}</label>
     <p v-if="error" class="form-field__error">*{{ error }}</p>
+    <textarea
+      v-if="type === 'textarea'"
+      :placeholder="placeholder"
+      v-model="model"
+      id="input"
+      class="form-field__input"
+      :class="{ 'form-field__input--error': error, 'form-field__input--complete': !error && model }"
+    />
     <input
+      v-else
       :type="type"
       :placeholder="placeholder"
       v-mask="mask"
@@ -30,6 +40,10 @@ defineProps({
     type: String,
     default: null,
   },
+  label: {
+    type: String,
+    default: '',
+  },
 })
 
 const model = defineModel()
@@ -40,6 +54,10 @@ const model = defineModel()
   @apply w-full;
   &__error {
     @apply text-xs text-error;
+  }
+
+  &__label {
+    @apply block text-lg font-bold mb-2;
   }
 
   &__input {

@@ -4,7 +4,10 @@ export const getRecipes = () => api.get('recipes')
 
 export const getRecipeDetail = (id) => api.get(`recipes/${id}`)
 
-export const createRecipe = (modal) => api.post('recipes', modal)
+export const createRecipe = (model) =>
+  api.post('recipes', model, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
 
 export const deleteRecipe = (id) => api.delete(`recipes/${id}`)
 

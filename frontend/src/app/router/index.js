@@ -40,32 +40,39 @@ const routes = [
     name: Routes.recipes.name,
     path: Routes.recipes.path,
     component: () => import('@/pages/recipes/RecipesPage.vue'),
+    children: [
+      {
+        name: 'list',
+        path: '',
+        component: () => import('@/pages/recipes/children/RecipesListChild.vue'),
+      },
+      {
+        name: 'create',
+        path: 'create',
+        component: () => import('@/pages/recipes/children/RecipeCreateChild.vue'),
+      },
+    ],
   },
   {
     name: Routes.recipe.name,
     path: Routes.recipe.path,
     component: () => import('@/pages/recipes/RecipePage.vue'),
   },
-  {
-    name: Routes.recipeCreate.name,
-    path: Routes.recipeCreate.path,
-    component: () => import('@/pages/recipes/RecipeCreatePage.vue'),
-    // beforeEnter: async (to, from, next) => {
-    //   const authStore = useAuthStore()
-    //   const recipeId = to.params.id
-    //
-    //   try {
-    //     const recipe = await fetchRecipe(recipeId) // Запрашиваем рецепт
-    //     if (authStore.user.id === recipe.user_id) {
-    //       next() // Разрешаем переход
-    //     } else {
-    //       next('/') // Если нет прав, редиректим на главную
-    //     }
-    //   } catch (error) {
-    //     next('/') // В случае ошибки редирект
-    //   }
-    // }
-  },
+  // beforeEnter: async (to, from, next) => {
+  //   const authStore = useAuthStore()
+  //   const recipeId = to.params.id
+  //
+  //   try {
+  //     const recipe = await fetchRecipe(recipeId) // Запрашиваем рецепт
+  //     if (authStore.user.id === recipe.user_id) {
+  //       next() // Разрешаем переход
+  //     } else {
+  //       next('/') // Если нет прав, редиректим на главную
+  //     }
+  //   } catch (error) {
+  //     next('/') // В случае ошибки редирект
+  //   }
+  // }
   {
     path: '/:catchAll(.*)',
     redirect: `${Routes.home.path}`,
