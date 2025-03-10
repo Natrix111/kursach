@@ -41,7 +41,7 @@ const error = ref('')
 const dragActive = ref(false)
 
 const { open, onChange, reset } = useFileDialog({
-  accept: 'image/*',
+  accept: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
   multiple: true,
 })
 
@@ -85,12 +85,16 @@ const handleDrop = (event) => {
 
 const removeImage = (index) => {
   imagePreviews.value.splice(index, 1)
+  emit(
+    'upload',
+    imagePreviews.value.map((item) => item.file),
+  )
 }
 </script>
 
 <style scoped lang="scss">
 .image-uploader {
-  @apply flex flex-col gap-4 w-full max-w-md mx-auto;
+  @apply flex flex-col gap-4 w-full mx-auto;
 
   &__input {
     @apply flex items-center justify-center w-full p-4 border-2 border-dashed border-gray-400 rounded-lg cursor-pointer transition;
@@ -109,7 +113,7 @@ const removeImage = (index) => {
   }
 
   &__preview {
-    @apply grid grid-cols-2 gap-3;
+    @apply grid grid-cols-5 gap-3;
   }
 
   &__item {

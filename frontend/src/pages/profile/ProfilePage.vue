@@ -35,7 +35,7 @@
     </div>
 
     <div class="profile-content">
-      <recipes-list v-if="activeTab === 'favorites'" :recipes="favoriteRecipes" />
+      <recipes-list v-if="activeTab === 'favorites'" :recipes="user.favorite_recipes" />
       <recipes-list v-if="activeTab === 'my-recipes'" :recipes="myRecipes" />
     </div>
   </div>
@@ -44,16 +44,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { ProfileAvatar, RecipesList } from '@/features'
-import { InputEdit, Routes } from '@/shared'
+import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { accountStore, modalStore } from '@/stores'
-import { ProfilePasswordModal } from '@/features'
+import { ProfileAvatar, RecipesList, ProfilePasswordModal } from '@/features'
+import { InputEdit, Routes } from '@/shared'
+import { accountStore, modalStore, recipesStore } from '@/stores'
 
-const { changeUsername, changeEmail } = accountStore.useStore()
+const { changeUsername, changeEmail, getUser } = accountStore.useStore()
 const { openModal } = modalStore.useStore()
 const { user, isLoadingUser } = storeToRefs(accountStore.useStore())
+const { recipes } = storeToRefs(recipesStore.useStore())
+const { getRecipes } = recipesStore.useStore()
 
 const activeTab = ref('favorites')
 
@@ -65,35 +66,12 @@ const saveEmail = (newEmail) => {
   changeEmail(newEmail)
 }
 
-const favoriteRecipes = ref([
-  {
-    id: 1,
-    image: 'https://via.placeholder.com/300',
-    title: 'Спагетти Карбонара',
-    description: 'Классический итальянский рецепт.',
-  },
-  {
-    id: 2,
-    image: 'https://via.placeholder.com/300',
-    title: 'Тирамису',
-    description: 'Нежный десерт с кофе и маскарпоне.',
-  },
-])
+const myRecipes = computed(() => recipes.value.filter((item) => item.can_edit === true))
 
-const myRecipes = ref([
-  {
-    id: 1,
-    image: 'https://via.placeholder.com/300',
-    title: 'Печенье с шоколадом',
-    description: 'Мягкое и ароматное печенье.',
-  },
-  {
-    id: 2,
-    image: 'https://via.placeholder.com/300',
-    title: 'Суп Том Ям',
-    description: 'Острый тайский суп с креветками.',
-  },
-])
+onMounted(() => {
+  getUser()
+  getRecipes()
+})
 </script>
 
 <style scoped lang="scss">

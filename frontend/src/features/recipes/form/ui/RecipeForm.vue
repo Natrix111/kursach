@@ -19,7 +19,7 @@
       label="Ингредиенты"
       v-model="ingredients"
       :error="errors.ingredients"
-      placeholder="Введите ингредиенты, каждый с новой строки"
+      placeholder="Введите ингредиенты, каждый через запятую"
       type="textarea"
     />
 
@@ -45,7 +45,6 @@ import { computed, ref, watch } from 'vue'
 import { FormField } from '@/shared'
 import { recipeSchema } from '../lib'
 import { RecipeImagesUpload } from '@/features/index.js'
-import { login } from '@/api/account/index.js'
 
 const props = defineProps({
   recipe: {
@@ -69,7 +68,14 @@ const emit = defineEmits(['submit'])
 
 const { meta, errors, handleSubmit, defineField, setErrors } = useForm({
   validationSchema: recipeSchema,
-  initialValues: props.recipe,
+  initialValues: {
+    title: props.recipe.title || '',
+    description: props.recipe.description || '',
+    ingredients: Array.isArray(props.recipe.ingredients)
+      ? props.recipe.ingredients.join(', ')
+      : props.recipe.ingredients || '',
+    instructions: props.recipe.instructions || '',
+  },
 })
 
 const images = ref([])
@@ -82,15 +88,6 @@ const [instructions] = defineField('instructions')
 const isEdit = computed(() => !!props.recipe.title)
 const isValid = computed(() => meta.value.valid)
 
-//
-// watch(
-//   () => props.recipe,
-//   (newRecipe) => {
-//     setValues(newRecipe)
-//   },
-//   { deep: true },
-// )
-
 const uploadImages = (newImages) => {
   images.value = newImages
 }
@@ -100,14 +97,12 @@ const submit = handleSubmit((values) => emit('submit', { ...values, images: imag
 watch(
   () => props.serverErrors,
   (newErrors) => {
-    console.log(newErrors)
     if (Object.keys(newErrors).length) {
       setErrors({
         title: newErrors.title?.[0] || '',
         description: newErrors.description?.[0] || '',
         ingredients: newErrors.ingredients?.[0] || '',
         instructions: newErrors.instructions?.[0] || '',
-        images: newErrors.images?.[0] || '',
       })
     }
   },

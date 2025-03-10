@@ -61,7 +61,7 @@ const model = defineModel()
   }
 
   &__input {
-    @apply px-4 py-2 border-2 border-neutral-dark rounded-lg focus:border-primary w-full;
+    @apply px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-primary w-full;
 
     &--error {
       @apply border-error;

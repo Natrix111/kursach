@@ -11,7 +11,12 @@ export const createRecipe = (model) =>
 
 export const deleteRecipe = (id) => api.delete(`recipes/${id}`)
 
-export const updateRecipe = (id) => api.patch(`recipes/${id}`)
+export const updateRecipe = (id, model) =>
+  api.post(`recipes/${id}`, model, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
 
 export const addToFavoriteRecipe = (id) => api.post(`recipes/favorites/${id}`)
 

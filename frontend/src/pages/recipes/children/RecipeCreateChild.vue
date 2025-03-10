@@ -9,6 +9,7 @@
 import { RecipeForm } from '@/features'
 import { recipesStore } from '@/stores'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const { createRecipe } = recipesStore.useStore()
 
@@ -24,15 +25,12 @@ const submit = async (values) => {
     else formData.append(key, value)
   }
 
-  formData.forEach((item, key) => console.log(key, ': ', item))
-
   try {
     await createRecipe(formData)
     serverErrors.value = {}
   } catch (error) {
     if (error.response?.data?.errors) {
       serverErrors.value = error.response.data.errors
-      console.log(serverErrors.value)
     }
   }
 }

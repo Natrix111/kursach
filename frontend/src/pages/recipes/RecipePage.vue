@@ -35,7 +35,9 @@
             <button class="recipe__edit btn btn--secondary" @click="openModal('edit-recipe')">
               Редактировать
             </button>
-            <button class="recipe__delete btn btn--danger">Удалить</button>
+            <button class="recipe__delete btn btn--danger" @click="openModal('delete-recipe')">
+              Удалить
+            </button>
           </div>
         </section>
 
@@ -48,7 +50,8 @@
         </section>
       </div>
     </div>
-    <recipe-edit-modal />
+    <recipe-edit-modal :recipe="currentRecipe" />
+    <recipe-delete-modal />
   </template>
   <template v-else>
     <h2>Загрузка</h2>
@@ -58,7 +61,13 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { FavoriteButton } from '@/shared'
-import { ReviewForm, ReviewList, RecipeSlider, RecipeEditModal } from '@/features'
+import {
+  ReviewForm,
+  ReviewList,
+  RecipeSlider,
+  RecipeEditModal,
+  RecipeDeleteModal,
+} from '@/features'
 import { modalStore, recipesStore, accountStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
@@ -91,7 +100,7 @@ const submitReview = () => {
 }
 
 onMounted(() => getRecipeDetail(route.params.id))
-onUnmounted(() => (currentRecipe.value = {}))
+onUnmounted(() => (currentRecipe.value = null))
 </script>
 
 <style scoped lang="scss">
