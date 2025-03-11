@@ -4,6 +4,7 @@ import { recipesApi, reviewsApi } from '@/api'
 import { push } from 'notivue'
 import { useRouter } from 'vue-router'
 import { Routes } from '@/shared'
+import { accountStore } from '@/stores'
 
 export const useStore = defineStore('recipes-store', () => {
   const recipes = ref([])
@@ -71,7 +72,7 @@ export const useStore = defineStore('recipes-store', () => {
       push.success(data.message)
 
       getRecipeDetail(id)
-      getRecipes()
+      accountStore.useStore().getUser()
     } catch (error) {
       push.error(error.response.data.error)
     }
