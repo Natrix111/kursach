@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { recipesApi } from '@/api'
+import { recipesApi, reviewsApi } from '@/api'
 import { push } from 'notivue'
 import { useRouter } from 'vue-router'
 import { Routes } from '@/shared'
@@ -59,7 +59,6 @@ export const useStore = defineStore('recipes-store', () => {
       getRecipeDetail(id)
     } catch (error) {
       push.error(error.response.data.message)
-      throw error
     }
   }
 
@@ -78,6 +77,42 @@ export const useStore = defineStore('recipes-store', () => {
     }
   }
 
+  const createReviews = async (id, comment) => {
+    try {
+      const { data } = await reviewsApi.createReview({ recipe_id: id, comment: comment })
+
+      push.success(data.message)
+
+      getRecipeDetail(id)
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
+  const deleteReviews = async (reviewId) => {
+    try {
+      const { data } = await reviewsApi.deleteReview(reviewId)
+
+      push.success(data.message)
+
+      getRecipeDetail(currentRecipe.value.id)
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
+  const updateReviews = async (reviewId, comment) => {
+    try {
+      const { data } = await reviewsApi.updateReview(reviewId, { comment: comment })
+
+      push.success(data.message)
+
+      getRecipeDetail(currentRecipe.value.id)
+    } catch (error) {
+      push.error(error.response.data.message)
+    }
+  }
+
   return {
     recipes,
     currentRecipe,
@@ -86,6 +121,9 @@ export const useStore = defineStore('recipes-store', () => {
     createRecipe,
     deleteRecipe,
     updateRecipe,
+    createReviews,
+    updateReviews,
+    deleteReviews,
     toggleFavoriteRecipe,
   }
 })

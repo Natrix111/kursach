@@ -44,7 +44,7 @@
         <section class="recipe__section">
           <h2 class="recipe__section-title">Отзывы</h2>
 
-          <review-form />
+          <review-form @submit="(comment) => createReviews(route.params.id, comment)" />
 
           <review-list :reviews="currentRecipe.reviews" />
         </section>
@@ -54,7 +54,7 @@
     <recipe-delete-modal />
   </template>
   <template v-else>
-    <h2>Загрузка</h2>
+    <h2 class="load">Загрузка</h2>
   </template>
 </template>
 
@@ -72,7 +72,7 @@ import { modalStore, recipesStore, accountStore } from '@/stores'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 
-const { getRecipeDetail, toggleFavoriteRecipe } = recipesStore.useStore()
+const { getRecipeDetail, toggleFavoriteRecipe, createReviews } = recipesStore.useStore()
 const { currentRecipe } = storeToRefs(recipesStore.useStore())
 const { openModal } = modalStore.useStore()
 const { isAuth } = storeToRefs(accountStore.useStore())

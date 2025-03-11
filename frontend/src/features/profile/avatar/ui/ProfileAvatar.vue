@@ -43,11 +43,9 @@ onChange(async () => {
     try {
       const { data } = await accountApi.changeAvatar(formData)
 
-      console.log(data)
       push.success(data.message)
     } catch (error) {
       previewImage.value = null
-      console.log(error)
       push.error(error.response.data.message)
     }
   }

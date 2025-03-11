@@ -73,6 +73,10 @@ input, textarea {
   }
 }
 
+.load {
+  @apply text-3xl text-gray-900 text-center;
+}
+
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;

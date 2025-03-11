@@ -1,6 +1,10 @@
 <template>
-  <form v-if="isAuth" class="review-form">
-    <textarea class="review-form__textarea" placeholder="Напишите ваш отзыв..."></textarea>
+  <form v-if="isAuth" class="review-form" @submit.prevent="submitHandler">
+    <textarea
+      v-model="comment"
+      class="review-form__textarea"
+      placeholder="Напишите ваш отзыв..."
+    ></textarea>
     <button class="review-form__button btn btn--primary">Оставить отзыв</button>
   </form>
   <p v-else class="review-form__message">Войдите, чтобы оставить отзыв.</p>
@@ -9,8 +13,17 @@
 <script setup>
 import { accountStore } from '@/stores'
 import { storeToRefs } from 'pinia'
+import { ref } from 'vue'
+
+const emit = defineEmits(['submit'])
 
 const { isAuth } = storeToRefs(accountStore.useStore())
+const comment = ref('')
+
+const submitHandler = () => {
+  emit('submit', comment.value)
+  comment.value = ''
+}
 </script>
 
 <style scoped lang="scss">

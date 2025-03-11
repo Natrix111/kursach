@@ -1,5 +1,5 @@
 <template>
-  <h2 v-if="isLoadingUser">Загрузка</h2>
+  <h2 v-if="isLoadingUser" class="load">Загрузка</h2>
   <div v-else class="profile container">
     <div class="profile-header">
       <profile-avatar :avatar="user.avatar" />
