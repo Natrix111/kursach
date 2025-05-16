@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Actions\CreateRecipeAction;
 use App\Http\Actions\DeleteRecipeAction;
+use App\Http\Actions\GetRecipesAction;
 use App\Http\Actions\UpdateRecipeAction;
 use App\Http\Requests\RecipeRequest;
 use App\Models\Recipe;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class RecipeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::all();
-        return response()->json($recipes);
+        $recipes = GetRecipesAction::execute($request);
+        return $recipes;
     }
 
     public function show(Recipe $recipe)
