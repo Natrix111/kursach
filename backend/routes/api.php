@@ -41,7 +41,7 @@ Route::prefix('recipes')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::post('/', [RecipeController::class, 'store']);
         Route::delete('{recipe}', [RecipeController::class, 'destroy']);
-        Route::post('{recipe}', [RecipeController::class, 'update']);
+        Route::patch('{recipe}', [RecipeController::class, 'update']);
         Route::prefix('favorites')->group(function () {
             Route::post('/{recipe}', [FavoriteRecipeController::class, 'store']);
             Route::delete('/{recipe}', [FavoriteRecipeController::class, 'destroy']);
